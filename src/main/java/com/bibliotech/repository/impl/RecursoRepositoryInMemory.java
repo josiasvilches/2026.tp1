@@ -20,4 +20,24 @@ public class RecursoRepositoryInMemory implements RecursoRepository {
     public List<Recurso> buscarTodos() {
         return new ArrayList<>(storage.values());
     }
+    @Override
+    public List<Recurso> buscarPorTitulo(String titulo) {
+        return storage.values().stream()
+                .filter(r -> r.titulo().toLowerCase().contains(titulo.toLowerCase()))
+                .toList();
+    }
+
+    @Override
+    public List<Recurso> buscarPorAutor(String autor) {
+        return storage.values().stream()
+                .filter(r -> r.autor().toLowerCase().contains(autor.toLowerCase()))
+                .toList();
+    }
+
+    @Override
+    public List<Recurso> buscarPorCategoria(Categoria categoria) {
+        return storage.values().stream()
+                .filter(r -> r.categoria() == categoria)
+                .toList();
+    }
 }
