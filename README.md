@@ -7,9 +7,9 @@
 
 | Campo | Respuesta |
 | :--- | :--- |
-| **Nombre** | |
-| **Apellido** | |
-| **Legajo** | |
+| **Nombre** | Josías |
+| **Apellido** | Vilches |
+| **Legajo** | 63050 |
 
 > **Fecha de entrega:** 28 de Abril de 2026
 
