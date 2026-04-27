@@ -6,6 +6,8 @@ import main.java.com.bibliotech.model.Socio;
 import main.java.com.bibliotech.repository.PrestamoRepository;
 import main.java.com.bibliotech.repository.RecursoRepository;
 import main.java.com.bibliotech.repository.SocioRepository;
+import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
 
 public class PrestamoService {
 
@@ -42,5 +44,28 @@ public class PrestamoService {
         // 5. Registrar
         Prestamo nuevoPrestamo = new Prestamo(dni, isbn);
         prestamoRepo.guardar(nuevoPrestamo);
+    }
+    public long procesarDevolucion(String prestamoId) {
+        // 1. Buscar el préstamo
+        Prestamo prestamo = prestamoRepo.buscarPorId(prestamoId)
+                .orElseThrow(() -> new EntidadNoEncontradaException("Préstamo no encontrado con ID: " + prestamoId));
+
+        // 2. Validar que no esté devuelto ya
+        if (prestamo.devuelto()) {
+            throw new PrestamoYaDevueltoException(prestamoId);
+        }
+
+        // 3. Registrar fecha y generar préstamo actualizado
+        LocalDate fechaActual = LocalDate.now();
+        Prestamo prestamoActualizado = prestamo.registrarDevolucion(fechaActual);
+
+        // 4. Sobrescribir en el repositorio
+        prestamoRepo.guardar(prestamoActualizado);
+
+        // 5. Cálculo automático de días de retraso usando Java Time API
+        long diasRetraso = ChronoUnit.DAYS.between(prestamo.fechaDevolucionEsperada(), fechaActual);
+
+        // Si devolvió a tiempo (negativo) o el mismo día (0), retornamos 0 retraso
+        return diasRetraso > 0 ? diasRetraso : 0;
     }
 }
