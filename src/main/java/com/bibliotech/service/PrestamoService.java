@@ -8,6 +8,7 @@ import main.java.com.bibliotech.repository.RecursoRepository;
 import main.java.com.bibliotech.repository.SocioRepository;
 import java.time.temporal.ChronoUnit;
 import java.time.LocalDate;
+import java.util.List;
 
 public class PrestamoService {
 
@@ -67,5 +68,8 @@ public class PrestamoService {
 
         // Si devolvió a tiempo (negativo) o el mismo día (0), retornamos 0 retraso
         return diasRetraso > 0 ? diasRetraso : 0;
+    }
+    public List<Prestamo> obtenerHistorial() {
+        return prestamoRepo.buscarTodos();
     }
 }
