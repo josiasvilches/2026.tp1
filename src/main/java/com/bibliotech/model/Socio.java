@@ -3,13 +3,19 @@ package main.java.com.bibliotech.model;
 import main.java.com.bibliotech.exception.ValidacionException;
 import java.util.regex.Pattern;
 
-public record Socio(String dni, String nombre, String apellido, String email) {
+public interface Socio {
+    String dni();
+    String nombre();
+    String apellido();
+    String email();
 
-    // Regex básico para validar la estructura del correo
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+    // Método polimórfico clave para el Issue 5
+    int limitePrestamos();
 
-    // Compact constructor para validación
-    public Socio {
+    // Lógica de validación centralizada (DRY - Don't Repeat Yourself)
+    Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
+
+    static void validarDatosBase(String dni, String email) {
         if (dni == null || dni.isBlank()) {
             throw new ValidacionException("El DNI no puede estar vacío.");
         }
