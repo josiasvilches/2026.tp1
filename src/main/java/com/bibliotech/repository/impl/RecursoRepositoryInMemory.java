@@ -1,5 +1,6 @@
 package main.java.com.bibliotech.repository.impl;
 import main.java.com.bibliotech.model.Recurso;
+import main.java.com.bibliotech.model.Categoria;
 import main.java.com.bibliotech.repository.RecursoRepository;
 import java.util.*;
 
